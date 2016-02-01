@@ -58,7 +58,7 @@ nmap <Leader>p "+p
 nmap <Leader>P "+P
 vmap <Leader>p "+p
 vmap <Leader>P "+P
-<<<<<<< HEAD
+
 nmap <Leader><Leader> V
 vmap <Leader><Leader> <Esc>
 
@@ -75,8 +75,7 @@ nnoremap <expr> j v:count ? 'j' : 'gj'
 vnoremap <expr> j v:count ? 'j' : 'gj'
 nnoremap <expr> k v:count ? 'k' : 'gk'
 vnoremap <expr> k v:count ? 'k' : 'gk'
-=======
->>>>>>> upstream/master
+
 
 " Start an external command with a single bang
 nnoremap ! :!

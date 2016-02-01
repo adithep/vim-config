@@ -9,6 +9,10 @@ if neobundle#tap('unite.vim') "{{{
 		\ 'file_rec/'.(has('nvim') ? 'neovim' : 'async')
 
 	nnoremap <silent> [unite]r   :<C-u>UniteResume -no-start-insert -force-redraw<CR>
+	nnoremap <silent> [unite]f   :<C-u>Unite file_rec/async<CR>
+	nnoremap <silent> [unite]n   :<C-u>execute ':Unite  -buffer-name=files -start-insert buffer file_rec/async:'.ProjectRootGuess().'/'<CR>
+	nnoremap <silent> [unite]i   :<C-u>Unite file_rec/git<CR>
+	nnoremap <silent> [unite]g   :<C-u>Unite grep:. -no-wrap<CR>
 	nnoremap <silent> [unite]b   :<C-u>Unite buffer file_mru bookmark<CR>
 	nnoremap <silent> [unite]f   :<C-u>Unite file_rec/`has('nvim') ? 'neovim' : 'async'`<CR>
 	nnoremap <silent> [unite]g   :<C-u>Unite grep:.<CR>
@@ -359,7 +363,7 @@ if neobundle#tap('vim-session') "{{{
 	nmap <Leader>se :<C-u>SaveSession<CR>
 	nmap <Leader>os :<C-u>OpenSession last<CR>
 
-	let g:session_directory = $VARPATH.'/session'
+	let g:session_directory = $VIMPATH.'/session'
 	let g:session_default_name = 'last'
 	let g:session_default_overwrite = 1
 	let g:session_verbose_messages = 0

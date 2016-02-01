@@ -59,6 +59,23 @@ nmap <Leader>P "+P
 vmap <Leader>p "+p
 vmap <Leader>P "+P
 
+nmap <Leader><Leader> V
+vmap <Leader><Leader> <Esc>
+
+" smth
+map <Leader>e :e <C-R>=expand("%:p:h") . "/" <CR>
+
+" Remap some keys to be more useful
+nnoremap ' `
+nnoremap ` '
+nnoremap <CR> za
+
+" Improve cursor up/down
+nnoremap <expr> j v:count ? 'j' : 'gj'
+vnoremap <expr> j v:count ? 'j' : 'gj'
+nnoremap <expr> k v:count ? 'k' : 'gk'
+vnoremap <expr> k v:count ? 'k' : 'gk'
+
 " Start an external command with a single bang
 nnoremap ! :!
 

@@ -35,7 +35,7 @@ augroup MyAutoCmd
 	autocmd FileType go highlight default link goErr WarningMsg |
 				\ match goErr /\<err\>/
 
-<<<<<<< HEAD
+
 	" Enable omni completions for file types
 	autocmd FileType c setlocal omnifunc=ccomplete#Complete
 	autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
@@ -48,14 +48,14 @@ augroup MyAutoCmd
 	autocmd FileType sql setlocal omnifunc=sqlcomplete#Complete
 	autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 	autocmd FileType javascript call JavaScriptFold()
-=======
+
 	autocmd FileType python
 		\ if has('python') || has('python3') |
 		\   setlocal omnifunc=jedi#completions |
 		\ else |
 		\   setlocal omnifunc= |
 		\ endif
->>>>>>> upstream/master
+
 
 augroup END
 
