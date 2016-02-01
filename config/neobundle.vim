@@ -30,7 +30,7 @@ NeoBundleLazy 'othree/html5.vim', {'on_ft': 'html'}
 NeoBundleLazy 'mustache/vim-mustache-handlebars', {'on_ft': 'html'}
 NeoBundleLazy 'rcmdnk/vim-markdown', {'on_ft': 'markdown'}
 NeoBundleLazy 'chase/vim-ansible-yaml', {'on_ft': ['yaml', 'ansible']}
-NeoBundleLazy 'mitsuhiko/vim-jinja', {'on_ft': ['htmljinja', 'jinja']}
+NeoBundleLazy 'mitsuhiko/vim-jinja', {'on_ft': ['htmljinja', 'jinja', 'salt']}
 NeoBundleLazy 'groenewege/vim-less', {'on_ft': 'less'}
 NeoBundleLazy 'hail2u/vim-css3-syntax', {'on_ft': 'css'}
 NeoBundleLazy 'chrisbra/csv.vim', {'on_ft': 'csv'}
