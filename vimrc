@@ -44,7 +44,6 @@ call neobundle#end()
 " }}}
 
 " Must be after plugins
-set clipboard+=unnamedplus
 filetype plugin indent on
 syntax enable
 
