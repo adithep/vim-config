@@ -3,6 +3,7 @@ if neobundle#tap('vim-operator-surround') "{{{
     nmap <silent>sd <Plug>(operator-surround-delete)
     nmap <silent>sr <Plug>(operator-surround-replace)
     nmap <silent>sc <Plug>(operator-surround-replace)
+endif
 "}}}
 if neobundle#tap('vim-projectroot') "{{{
     let g:rootmarkers = ['package.js', 'package.json', 'Dockerfile', '.git', '.meteor']

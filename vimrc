@@ -1,16 +1,10 @@
-<<<<<<< HEAD
 "      .-.     .-.     .-.     .-.     .-.     .-.     .-.
 " `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'
 "
-" github.com/rafi vim config
-" vim: set ts=2 sw=2 tw=80 noet :
+" https://github.com/rafi/vim-config
 
 " Runtime and Plugins
-"---------------------------------------------------------
-let g:loaded_python_provider = 1
-let g:python_host_skip_check = 1
-" Skip initialization for vim-tiny/small
-if 0 | endif
+" -------------------------------------------------
 
 if &compatible
 	set nocompatible
@@ -21,8 +15,8 @@ if isdirectory($XDG_CONFIG_HOME.'/vim')
 	let $VIMPATH=expand('$XDG_CONFIG_HOME/vim')
 	let $VARPATH=expand('$XDG_CACHE_HOME/vim')
 else
-	let $VIMPATH=expand('~/.vim')
-	let $VARPATH=expand('~/.cache/vim')
+	let $VIMPATH=expand('$HOME/.vim')
+	let $VARPATH=expand('$HOME/.cache/vim')
 endif
 
 function! s:source_file(path)
@@ -38,13 +32,19 @@ if neobundle#load_cache()
 	NeoBundleFetch 'Shougo/neobundle.vim'
 	call s:source_file('neobundle.vim')
 	call s:source_file('neobundle1.vim')
-	NeoBundleSaveCache
+	call neobundle#local(expand('$VARPATH/plugins/awesome-vim-colorschemes'), {})
+	if ! exists('g:vim_installing')
+		NeoBundleSaveCache
+	endif
 endif
+call neobundle#local(expand('$VIMPATH/dev'), {})
 call s:source_file('plugins.vim')
+call s:source_file('plugins1.vim')
 call neobundle#end()
 " }}}
-set clipboard+=unnamedplus
+
 " Must be after plugins
+set clipboard+=unnamedplus
 filetype plugin indent on
 syntax enable
 
@@ -55,18 +55,19 @@ endif
 
 " Loading configuration modules {{{
 call s:source_file('general.vim')
+call s:source_file('theme.vim')
 call s:source_file('filetype.vim')
 call s:source_file('terminal.vim')
 call s:source_file('utils.vim')
-call s:source_file('colors.vim')
 call s:source_file('bindings.vim')
+call s:source_file('tabline.vim')
+
+if has('nvim')
+	call s:source_file('neovim.vim')
+endif
 " }}}
 
 call neobundle#call_hook('on_source')
 set secure
-=======
-" Note: Skip initialization for vim-tiny or vim-small.
-if 1
-	execute 'source' fnamemodify(expand('<sfile>'), ':h').'/config/vimrc'
-endif
->>>>>>> upstream/master
+
+" vim: set ts=2 sw=2 tw=80 noet :
