@@ -14,7 +14,6 @@ if neobundle#tap('unite.vim') "{{{
 	nnoremap <silent> [unite]i   :<C-u>Unite file_rec/git<CR>
 	nnoremap <silent> [unite]g   :<C-u>Unite grep:. -no-wrap<CR>
 	nnoremap <silent> [unite]b   :<C-u>Unite buffer file_mru bookmark<CR>
-	nnoremap <silent> [unite]f   :<C-u>Unite file_rec/`has('nvim') ? 'neovim' : 'async'`<CR>
 	nnoremap <silent> [unite]g   :<C-u>Unite grep:.<CR>
 	nnoremap <silent> [unite]u   :<C-u>Unite source<CR>
 	nnoremap <silent> [unite]t   :<C-u>Unite tag<CR>
