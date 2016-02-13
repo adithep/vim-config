@@ -62,8 +62,6 @@ call s:source_file('utils1.vim')
 call s:source_file('bindings.vim')
 call s:source_file('tabline.vim')
 
-autocmd FileType sls setlocal shiftwidth=4 softtabstop=4
-
 if has('nvim')
 	call s:source_file('neovim.vim')
 endif

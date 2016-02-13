@@ -1,7 +1,6 @@
 
 " Plugin Settings
 "---------------------------------------------------------
-
 if neobundle#tap('unite.vim') "{{{
 	let g:unite_data_directory = $VARPATH.'/unite'
 	let g:unite_source_history_yank_enable = 1
@@ -10,6 +9,7 @@ if neobundle#tap('unite.vim') "{{{
 
 	nnoremap <silent> [unite]r   :<C-u>UniteResume -no-start-insert -force-redraw<CR>
 	nnoremap <silent> [unite]f   :<C-u>Unite file_rec/async<CR>
+	nnoremap <silent> [unite]c   :<C-u>execute ':Unite file_rec/async:'.ProjectRootGuess().'/'<CR>
 	nnoremap <silent> [unite]n   :<C-u>execute ':Unite  -buffer-name=files -start-insert buffer file_rec/async:'.ProjectRootGuess().'/'<CR>
 	nnoremap <silent> [unite]i   :<C-u>Unite file_rec/git<CR>
 	nnoremap <silent> [unite]g   :<C-u>Unite grep:. -no-wrap<CR>
@@ -398,9 +398,17 @@ endif
 
 "}}}
 if neobundle#tap('tern_for_vim') "{{{
-	autocmd MyAutoCmd FileType javascript setlocal omnifunc=tern#Complete
 	let g:tern_show_signature_in_pum = 1
 	let g:tern_show_argument_hints = 'on_hold'
+	augroup dkoomnifuncs
+    autocmd MyAutoCmd FileType javascript nnoremap <buffer> gb :TernDef<CR>
+    autocmd MyAutoCmd FileType javascript setlocal omnifunc=tern#Complete
+  augroup END
+
+  " force using omnicompletion (tern in this case)
+  " pretty much match anything | match whitespace and then anything
+  "let s:fip.javascript = '\h\w*\|[^. \t]\.\w*'
+  "let s:fip.javascript = '[^. \t]\.\w*'
 	call neobundle#untap()
 endif
 

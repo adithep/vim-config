@@ -43,8 +43,6 @@ NeoBundleLazy 'PotatoesMaster/i3-vim-syntax', {'on_ft': 'i3'}
 NeoBundleLazy 'ekalinin/Dockerfile.vim', {'on_ft': 'Dockerfile'}
 NeoBundleLazy 'jstrater/mpvim', {'on_ft': 'portfile'}
 NeoBundleLazy 'vim-ruby/vim-ruby', {'on_ft': 'ruby', 'on_map': '<Plug>'}
-NeoBundleLazy 'jelera/vim-javascript-syntax', {'on_ft': 'javascript'}
-NeoBundleLazy 'jiangmiao/simple-javascript-indenter', {'on_ft': 'javascript'}
 NeoBundleLazy 'StanAngeloff/php.vim', {'on_ft': 'php'}
 NeoBundleLazy 'rayburgemeestre/phpfolding.vim', {'on_ft': 'php'}
 NeoBundleLazy 'rafi/vim-phpspec', {
