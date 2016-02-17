@@ -11,6 +11,9 @@ augroup filetypedetect " {{{
 	autocmd BufNewFile,BufRead */inventory/*        setf ansible
 	autocmd BufNewFile,BufRead */playbooks/*/*.yml  setf ansible
   autocmd BufNewFile,BufRead */pillarstack/*/*.yml  setf sls
+	autocmd BufNewFile,BufRead */master.d/*.conf    setf sls
+  autocmd BufNewFile,BufRead */minion.d/*.conf    setf sls
+  autocmd BufNewFile,BufRead */salt/master        setf sls
   autocmd BufNewFile,BufRead *.sls                setf sls
 	autocmd BufNewFile,BufRead *.j2                 setf jinja
 	autocmd BufNewFile,BufRead Tmuxfile,tmux/config setf tmux
