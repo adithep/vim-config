@@ -1,6 +1,7 @@
 /spell
 .DS_Store
 ._.DS_Store
+._*
 /.vault.vim
 *~
 /.stignore
