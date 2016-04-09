@@ -30,6 +30,11 @@ if neobundle#tap('vim-better-javascript-completion') "{{{
 	call neobundle#untap()
 endif
 
+if neobundle#tap('dbext.vim') "{{{
+    let g:dbext_default_profile_PG = 'type=PGSQL:user=postgres:passwd=12279487990141:dbname=postgres:host=postgres'
+  call neobundle#untap()
+endif
+
 if neobundle#tap('deoplete.nvim') "{{{
   call dko#InitObject('g:deoplete#omni#functions')
   " Not extending, instead pluck first item from list since deoplete only
