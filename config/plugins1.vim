@@ -31,7 +31,8 @@ if neobundle#tap('vim-better-javascript-completion') "{{{
 endif
 
 if neobundle#tap('dbext.vim') "{{{
-    let g:dbext_default_profile_PG = 'type=PGSQL:user=postgres:passwd=12279487990141:dbname=postgres:host=postgres'
+    let g:dbext_default_profile_PG = 'type=PGSQL:user=postgres:dbname=postgres:host=postgres'
+    autocmd BufRead *.sql DBSetOption profile=PG
   call neobundle#untap()
 endif
 
