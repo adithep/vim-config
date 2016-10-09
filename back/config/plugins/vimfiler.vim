@@ -7,7 +7,7 @@ let g:vimfiler_restore_alternate_file = 1
 "let g:vimfiler_preview_action = 'auto_preview'
 
 let g:vimfiler_ignore_pattern =
-	\ '^\%(\.git\|\.idea\|\.DS_Store\|\.vagrant\|\.stversions\|\.tmp'
+	\ '^\%(\.git\|\.idea\|\.DS_Store\|\.vagrant\|.stversions'
 	\ .'\|node_modules\|.*\.pyc\|.*\.egg-info\|__pycache__\)$'
 
 if has('mac')
@@ -19,14 +19,13 @@ endif
 
 call vimfiler#custom#profile('default', 'context', {
 	\  'safe': 0,
-	\  'explorer': 1,
 	\  'winwidth': 25,
-	\  'split': 1,
-	\  'direction': 'topleft',
+	\  'explorer': 1,
 	\  'auto_expand': 1,
 	\  'no_quit': 1,
 	\  'force_hide': 1,
 	\  'parent': 0,
+	\  'split': 1,
 	\  'toggle': 1,
 	\ })
 

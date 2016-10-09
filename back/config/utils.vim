@@ -2,58 +2,59 @@
 " Commands
 "---------------------------------------------------------
 " Autocommands {{{
-augroup MyAutoCmd
 
-	" Check timestamp on window enter. More eager than 'autoread'
-	autocmd WinEnter * checktime
+" Reload .vimrc automatically
+autocmd MyAutoCmd BufWritePost vimrc,neobundle.vim
+		\ | NeoBundleClearCache | source $MYVIMRC
+		\ | call g:SetCustomTheme()
+		\ | call tinyline#define_highlights()
 
-	" If session is loaded, write session file on quit
-	autocmd VimLeavePre *
-		\ if ! empty(v:this_session) && ! exists('g:SessionLoad')
-		\ |   execute 'mksession! '.fnameescape(v:this_session)
-		\ | endif
+" Check timestamp on window enter. More eager than 'autoread'
+autocmd MyAutoCmd WinEnter * checktime
 
-	" Write tags automatically in the background for Git repositories.
-	autocmd BufWritePost *
-		\ if finddir('.git/', getcwd().';') !=? '' && get(g:, 'ctags_compile', 0)
-		\ |   call <SID>shell_bg('ctags', 's:tags_job_handler')
-		\ | endif
+" Write tags automatically in the background for Git repositories.
+autocmd MyAutoCmd BufWritePost *
+	\ if finddir('.git/', getcwd().';') !=? '' && get(g:, 'ctags_compile', 0)
+	\ |   call <SID>shell_bg('ctags', 's:tags_job_handler')
+	\ | endif
 
-	" When editing a file, always jump to the last known cursor position.
-	" Don't do it when the position is invalid or when inside an event handler
-	autocmd BufReadPost *
-		\ if &ft !~ '^git\c' && ! &diff && line("'\"") > 0 && line("'\"") <= line("$")
-		\|   exe 'normal! g`"zvzz'
-		\| endif
+function! s:tags_job_handler(job_id, data, event)
+	if a:event ==? 'stdout'
+		echomsg 'Tags index completed. ('.self.project.')'.join(a:data)
+	elseif a:event ==? 'stderr'
+		echoerr 'Unable to run ctags for '.self.project.': '.join(a:data)
+	endif
+endfunction
 
-	" Disable paste and/or update diff when leaving insert mode
-	autocmd InsertLeave *
-			\ if &paste | setlocal nopaste mouse=a | echo 'nopaste' | endif |
-			\ if &l:diff | diffupdate | endif
+" When editing a file, always jump to the last known cursor position.
+" Don't do it when the position is invalid or when inside an event handler
+autocmd MyAutoCmd BufReadPost *
+	\ if &ft !~ '^git\c' && ! &diff && line("'\"") > 0 && line("'\"") <= line("$")
+	\|   exe 'normal! g`"zvzz'
+	\| endif
 
-	" Open Quickfix window automatically
-	autocmd QuickFixCmdPost [^l]* leftabove copen
-		\ | wincmd p | redraw!
-	autocmd QuickFixCmdPost l* leftabove lopen
-		\ | wincmd p | redraw!
+" Disable paste and/or update diff when leaving insert mode
+autocmd MyAutoCmd InsertLeave *
+		\ if &paste | setlocal nopaste mouse=a | echo 'nopaste' | endif |
+		\ if &l:diff | diffupdate | endif
 
-	" Fix window position of help/quickfix
-	autocmd FileType help if &l:buftype ==# 'help'
-		\ | wincmd K | endif
-	autocmd FileType qf   if &l:buftype ==# 'quickfix'
-		\ | wincmd J | endif
+" Open Quickfix window automatically
+autocmd MyAutoCmd QuickFixCmdPost [^l]* leftabove copen
+	\ | wincmd p | redraw!
+autocmd MyAutoCmd QuickFixCmdPost l* leftabove lopen
+	\ | wincmd p | redraw!
 
-augroup END
+" Fix window position of help/quickfix
+autocmd MyAutoCmd FileType help if &l:buftype ==# 'help'
+	\ | wincmd K | endif
+autocmd MyAutoCmd FileType qf   if &l:buftype ==# 'quickfix'
+	\ | wincmd J | endif
 
 " }}}
 " Commands {{{
 " --------
 
 command! ZoomToggle call s:ZoomToggle()
-
-" Save and persist session
-command! -bar -complete=file -nargs=? SessionSave
-	\ call s:session_save(<q-args>)
 
 " Remove end of line white space.
 command! -range=% WhitespaceErase call <SID>WhitespaceErase(<line1>,<line2>)
@@ -101,32 +102,20 @@ function! FoldText() "{{{
 	return foldtextstart . repeat(foldchar, winwidth(0)-foldtextlength) . foldtextend
 endfunction "}}}
 
-function! s:tags_job_handler(job_id, data, event)
-	if a:event ==? 'stdout'
-		echomsg 'Tags index completed. ('.self.project.')'.join(a:data)
-	elseif a:event ==? 'stderr'
-		echoerr 'Unable to run ctags for '.self.project.': '.join(a:data)
-	endif
-endfunction
-
 function! s:shell_bg(cmd, callback)
 	if ! executable(a:cmd)
 		return
 	endif
 
-	let l:msg = '['.getcwd().'] Running background command: '.a:cmd
 	if has('nvim')
-		echo l:msg
 		let l:job = jobstart([a:cmd], {
-			\   'project': ProjectName(),
-			\   'on_stdout': function(a:callback),
-			\   'on_stderr': function(a:callback)
-			\ })
-	elseif exists('*vimproc#system_bg')
-		echo l:msg
-		call vimproc#system_bg(a:cmd)
-	else
-		echoerr 'For background tasks please use Neovim or install vimproc plugin.'
+		\   'project': ProjectName(),
+		\   'on_stdout': function(a:callback),
+		\   'on_stderr': function(a:callback)
+		\ })
+	elseif exists('*vimproc#system_bg') ||
+		\ (exists('*neobundle#get') && ! empty(neobundle#get('vimproc.vim')))
+			call vimproc#system_bg(a:cmd)
 	endif
 endfunction
 
@@ -136,9 +125,9 @@ function! ProjectName()
 endfunction
 
 function! ProjectRoot()
-	let dir = getbufvar('%', 'project_dir')
+  let dir = getbufvar('%', 'project_dir')
 	let curr_dir = getcwd()
-	if empty(dir) || getbufvar('%', 'project_dir_last_cwd') != curr_dir
+  if empty(dir) || getbufvar('%', 'project_dir_last_cwd') != curr_dir
 		let patterns = ['.git', '.git/', '_darcs/', '.hg/', '.bzr/', '.svn/']
 		for pattern in patterns
 			let is_dir = stridx(pattern, '/') != -1
@@ -153,17 +142,6 @@ function! ProjectRoot()
 		endfor
 	endif
 	return dir
-endfunction
-
-function! s:session_save(file) abort
-	if ! isdirectory(g:session_directory)
-		call mkdir(g:session_directory, 'p')
-	endif
-	let file_name = empty(a:file) ? block#project() : a:file
-	let file_path = g:session_directory.file_name.'.vim'
-	execute 'mksession! '.fnameescape(file_path)
-	echo 'Tracking session in '.fnamemodify(file_path, ':~:.')
-	let v:this_session = file_path
 endfunction
 
 " Zoom / Restore window
@@ -198,10 +176,10 @@ function! s:ToggleWhitespace(mode) "{{{
 	else
 		let l:pattern = (a:mode ==# 'i') ? '\s\+\%#\@<!$' : '\s\+$\| \+\ze\t'
 		if exists('w:whitespace_match_id')
-			call matchdelete(w:whitespace_match_id)
-			call matchadd('ExtraWhitespace', l:pattern, 10, w:whitespace_match_id)
+			silent! call matchdelete(w:whitespace_match_id)
+			call matchadd('BadWhitespace', l:pattern, 10, w:whitespace_match_id)
 		else
-			let w:whitespace_match_id = matchadd('ExtraWhitespace', l:pattern)
+			let w:whitespace_match_id = matchadd('BadWhitespace', l:pattern)
 		endif
 	endif
 endfunction "}}}

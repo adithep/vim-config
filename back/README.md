@@ -1,45 +1,37 @@
 # Vim config
 
-Lean mean Vim/Neovim machine, ~40ms startup time.
-
-Best with Neovim or Vim 7.4+ with +lua +python extensions enabled.
+Lean mean Vim machine, 85ms startup time.
+Best with Vim 7.4
 
 ## Features
 
-- Neovim-centric
-- Fast startup time
 - Robust, yet light weight
-- Lazy-load 90% of plugins with [dein.vim]
+- Lazy-load 90% of plugins with NeoBundle
 - Modular configuration
 - Unite centric work-flow
-- Extensive Deoplete and Neocomplete setup
-- Lightweight simple status/tabline
-- Easy customizable theme
-- Premium color-schemes
+- Extensive Neocomplete setup
 - Central location for tags
+- Lightweight simple status/tabline
+- Premium color-schemes
+- Supports Neovim
 
 ## Screenshot
 
 ![Vim screenshot](http://rafi.io/static/img/project/vim-config/features.png)
 
 ## Install
-If you are using Neovim, clone with:
+### VIM
+1. Clone `git clone git://github.com/rafi/vim-config.git ~/.vim`
+2. Enter directory `cd ~/.vim`
+3. Run `make test` to make sure you have vim compiled with python and lua.
+4. Run `make install`
+5. Start `vim` or `gvim`, or `nvim`
+
+### Neovim
 ```sh
 mkdir -p "${XDG_CONFIG_HOME:=$HOME/.config}"
-git clone git://github.com/rafi/vim-config.git "${XDG_CONFIG_HOME:=$HOME/.config}/nvim"
+ln -s ~/.vim "${XDG_CONFIG_HOME:=$HOME/.config}/nvim"
 ```
-
-Or, if you are using Vim:
-```sh
-git clone git://github.com/rafi/vim-config.git ~/.vim
-```
-
-Once cloned,
-
-1. Enter the directory you've cloned into
-2. Run `make test` to make sure you have required dependencies
-3. Run `make`
-4. That's it! Start `nvim` or `vim`.
 
 ## Upgrade
 
@@ -47,41 +39,38 @@ Run `make update`
 
 ## XDG conformity
 
-VIM (Not Neovim!) looks for its configuration in the `~/.vim` directory.
-My setup **also** supports the XDG location, `.config/vim`. If you want to
-use the XDG specification standard, add this somewhere
-in your `.profile` or `.bashrc`:
+VIM looks for its configuration in the `~/.vim` directory. My setup **also**
+supports the XDG location, `.config/vim`. If you want to use the XDG
+specification standard, add this somewhere in your `.profile` or `.bashrc`:
 ```sh
 # Set vimrc's location and source it on vim startup
 export VIMINIT='let $MYVIMRC="$XDG_CONFIG_HOME/vim/vimrc" | source $MYVIMRC'
 ```
 
-If you're curious how it's done, see [vimrc:13-20](./config/vimrc#L13-L20)
-and [init.vim:33-46](./config/init.vim#L33-L46).
+If you're curious how it's done, see [vimrc:16-23](vimrc#L16-L23)
+and [init.vim:42-47](./config/init.vim#L42-L47).
 
 ## Structure
 - [config](./config)/ - Configuration
-  - [plugins](./config/plugins)/ - Plugin configurations
+  - [plugins](./plugins)/ - Individual plugin configurations
   - [bindings.vim](./config/bindings.vim) - Key bindings
+  - [colors.vim](./config/bindings.vim) - Custom colors
   - [filetype.vim](./config/filetype.vim) - Language behavior
-  - [general.vim](./config/general.vim) - General configuration
-  - [init.vim](./config/init.vim) - `runtimepath` initialization
-  - [neovim.vim](./config/neovim.vim) - Neovim specific setup
-  - [plugins.vim](./config/plugins.vim) - Plugin bundles
-  - [tabline.vim](./config/tabline.vim) - Tabline configuration
+  - [general.vim](./config/general.vim) - VIM general configuration
+  - [init.vim](./config/init.vim) - VIM initialization
+  - [neobundle.vim](./config/neobundle.vim) - Plugin bundles
+  - [config.vim](./config/plugins.vim) - Plugin configuration
   - [terminal.vim](./config/terminal.vim) - Terminal configuration
-  - [theme.vim](./config/theme.vim) - Color-scheme and theme setup
   - [utils.vim](./config/utils.vim) - Commands and functions
-  - [vimrc](./config/vimrc) - Initialization
-- [ftplugin](./ftplugin)/ - Language specific custom settings
+- [ftplugin](./ftplugin)/ - Language settings
+- [plugin](./plugin)/ - Plugin playground
 - [snippets](./snippets)/ - Code snippets
-- [filetype.vim](./filetype.vim) - Custom filetype detection
-- [init.vim](./init.vim) - Sources `config/vimrc`
-- [vimrc](./vimrc) - Sources `config/vimrc`
+- [filetype.vim](./filetype.vim) - Exotic filetype detection
+- [vimrc](./vimrc) - Primary configuration file
 
 ## Plugin Highlights
 
-- Package management with caching enabled and lazy loading
+- NeoBundle with caching enabled and lazy loading
 - Project-aware tabs and label
 - Vimfiler as file-manager + SSH connections
 - Go completion via vim-go and gocode
@@ -93,13 +82,13 @@ and [init.vim:33-46](./config/init.vim#L33-L46).
     hex editor, sessions, and much more.
 
 _Note_ that 90% of the plugins are **[lazy-loaded]**.
-[lazy-loaded]: ./config/plugins.vim
+[lazy-loaded]: ./config/neobundle.vim
 
 ## Non Lazy-Loaded Plugins
 
 Name           | Description
 -------------- | ----------------------
-[dein.vim] | Dark powered Vim/Neovim plugin manager
+[neobundle] | Next generation package manager
 [vimproc] | Interactive command execution
 [colorschemes] | Awesome color-schemes
 [file-line] | Allow opening a file in a given line
@@ -173,6 +162,7 @@ Name           | Description
 [matchit] | Intelligent pair matching
 [indentline] | Display vertical indention lines
 [choosewin] | Choose window to use, like tmux's 'display-pane'
+[session] | Extended session management
 
 ### Completion
 Name           | Description
@@ -208,7 +198,7 @@ Name           | Description
 [textobj-user] | Create your own text objects
 [textobj-multiblock] | Handle multiple brackets objects
 
-[dein.vim]: https://github.com/Shougo/dein.vim
+[neobundle]: https://github.com/Shougo/neobundle.vim
 [vimproc]: https://github.com/Shougo/vimproc.vim
 [colorschemes]: https://github.com/rafi/awesome-vim-colorschemes
 [file-line]: https://github.com/bogado/file-line
@@ -273,6 +263,7 @@ Name           | Description
 [matchit]: http://www.vim.org/scripts/script.php?script_id=39
 [indentline]: https://github.com/Yggdroot/indentLine
 [choosewin]: https://github.com/t9md/vim-choosewin
+[session]: https://github.com/xolox/vim-session
 
 [delimitmate]: https://github.com/Raimondi/delimitMate
 [echodoc]: https://github.com/Shougo/echodoc.vim
@@ -306,7 +297,7 @@ Key   | Mode | Action
 `Space` | Normal | **Leader**
 Arrows | Normal | Resize splits (* Enable `g:elite_mode` in `.vault.vim`)
 `Backspace` | Normal | Match bracket (%)
-`K` | Normal | Open Zeal or Dash on many file types (except Python+Vim script)
+`K` | Normal | Open Zeal or Dash on many filetypes (not in vim and python)
 `<leader>`+`y` | Normal/visual | Copy selection to X11 clipboard ("+y)
 `<leader>`+`p` | Normal/visual | Paste selection from X11 clipboard ("+p)
 `Y` | Normal | Yank to the end of line (y$)
@@ -333,6 +324,7 @@ Arrows | Normal | Resize splits (* Enable `g:elite_mode` in `.vault.vim`)
 
 Key   | Mode | Action
 ----- |:----:| ------------------
+`f`+`y` | Normal | Yank filepath to X11 clipboard
 `<leader>`+`cd` | Normal | Switch to the directory of opened buffer (:cd %:p:h)
 `<leader>`+`w` | Normal/visual | Write (:w)
 `Ctrl`+`s` | _All_ | Write (:w)
@@ -389,22 +381,22 @@ Key   | Mode | Action
 
 Key   | Mode | Action
 ----- |:----:| ------------------
-`;`+`r` | Normal | Resumes Unite window
-`;`+`f` | Normal | Opens Unite file recursive search
-`;`+`i` | Normal | Opens Unite git file search
-`;`+`g` | Normal | Opens Unite grep with ag (the_silver_searcher)
-`;`+`u` | Normal | Opens Unite source
-`;`+`t` | Normal | Opens Unite tag
-`;`+`T` | Normal | Opens Unite tag/include
-`;`+`l` | Normal | Opens Unite location list
-`;`+`q` | Normal | Opens Unite quick fix
-`;`+`e` | Normal | Opens Unite register
-`;`+`j` | Normal | Opens Unite jump, change
-`;`+`h` | Normal | Opens Unite history/yank
-`;`+`s` | Normal | Opens Unite session
-`;`+`o` | Normal | Opens Unite outline
-`;`+`ma` | Normal | Opens Unite mapping
-`;`+`me` | Normal | Opens Unite output messages
+`f`+`r` | Normal | Resumes Unite window
+`f`+`f` | Normal | Opens Unite file recursive search
+`f`+`i` | Normal | Opens Unite git file search
+`f`+`g` | Normal | Opens Unite grep with ag (the_silver_searcher)
+`f`+`u` | Normal | Opens Unite source
+`f`+`t` | Normal | Opens Unite tag
+`f`+`T` | Normal | Opens Unite tag/include
+`f`+`l` | Normal | Opens Unite location list
+`f`+`q` | Normal | Opens Unite quick fix
+`f`+`e` | Normal | Opens Unite register
+`f`+`j` | Normal | Opens Unite jump, change
+`f`+`h` | Normal | Opens Unite history/yank
+`f`+`s` | Normal | Opens Unite session
+`f`+`o` | Normal | Opens Unite outline
+`f`+`ma` | Normal | Opens Unite mapping
+`f`+`me` | Normal | Opens Unite output messages
 `<leader>`+`b` | Normal | Opens Unite buffers, mru, bookmark
 `<leader>`+`ta` | Normal | Opens Unite tab
 `<leader>`+`gf` | Normal | Opens Unite file with word at cursor
@@ -432,8 +424,8 @@ Key   | Mode | Action
 
 Key   | Mode | Action
 ----- |:----:| ------------------
-`;`+`e` | Normal | Toggle file explorer
-`;`+`a` | Normal | Toggle file explorer on current file
+`f`+`e` | Normal | Toggle file explorer
+`f`+`a` | Normal | Toggle file explorer on current file
 | **Within _VimFiler_ buffers** |||
 `Ctrl`+`j` | Normal | Un-map
 `Ctrl`+`l` | Normal | Un-map

@@ -1,15 +1,32 @@
 
-" File Types {{{
+" File Types
 "-------------------------------------------------
 
-augroup MyAutoCmd
+" Reload vim config automatically {{{
+execute 'autocmd MyAutoCmd BufWritePost '.$VIMPATH.'/config/*vim,vimrc nested'
+	\ .' source $MYVIMRC | redraw'
+" }}}
+
+augroup MyAutoCmd " {{{
+
+	" Automatically set read-only for files being edited elsewhere
+	autocmd SwapExists * nested let v:swapchoice = 'o'
+
+	" Reload Vim script automatically if setlocal autoread
+	autocmd BufWritePost,FileWritePost *.vim nested
+		\ if &l:autoread > 0 | source <afile> |
+		\   echo 'source '.bufname('%') |
+		\ endif
 
 	" Update filetype on save if empty
-	autocmd BufWritePost *
-				\ if &l:filetype ==# '' || exists('b:ftdetect')
-				\ |   unlet! b:ftdetect
-				\ |   filetype detect
-				\ | endif
+	autocmd BufWritePost * nested
+		\ if &l:filetype ==# '' || exists('b:ftdetect')
+		\ |   unlet! b:ftdetect
+		\ |   filetype detect
+		\ | endif
+
+	autocmd FileType help
+		\ setlocal iskeyword+=: | setlocal iskeyword+=# | setlocal iskeyword+=-
 
 	autocmd FileType crontab setlocal nobackup nowritebackup
 
@@ -17,16 +34,19 @@ augroup MyAutoCmd
 
 	autocmd FileType gitcommit,qfreplace setlocal nofoldenable
 
+	" https://webpack.github.io/docs/webpack-dev-server.html#working-with-editors-ides-supporting-safe-write
+	autocmd FileType html,css,jsx,javascript.jsx setlocal backupcopy=yes
+
 	autocmd FileType zsh setlocal foldenable foldmethod=marker
 
 	" Improved include pattern
 	autocmd FileType html
-				\ setlocal includeexpr=substitute(v:fname,'^\\/','','') |
-				\ setlocal path+=./;/
+		\ setlocal includeexpr=substitute(v:fname,'^\\/','','') |
+		\ setlocal path+=./;/
 
 	autocmd FileType markdown
-				\ setlocal spell expandtab autoindent
-					\ formatoptions=tcroqn2 comments=n:>
+		\ setlocal spell expandtab autoindent
+			\ formatoptions=tcroqn2 comments=n:>
 
 	autocmd FileType apache setlocal path+=./;/
 
@@ -35,42 +55,31 @@ augroup MyAutoCmd
 	autocmd FileType go highlight default link goErr WarningMsg |
 				\ match goErr /\<err\>/
 
-	autocmd FileType python
-		\ if has('python') || has('python3') |
-		\   setlocal omnifunc=jedi#completions |
-		\ else |
-		\   setlocal omnifunc= |
-		\ endif
+	autocmd Syntax * if 5000 < line('$') | syntax sync minlines=200 | endif
 
-augroup END
+augroup END " }}}
 
-augroup vimrc-highlight
-	autocmd!
-	autocmd Syntax * if 5000 < line('$') | syntax sync minlines=100 | endif
-augroup END
-
-" }}}
-" Internal Plugin Settings " {{{
+" Internal Plugin Settings  {{{
 " ------------------------
 
-" PHP "{{{
+" PHP {{{
 let g:PHP_removeCRwhenUnix = 0
 
 " }}}
-" Python "{{{
+" Python {{{
 let g:python_highlight_all = 1
 
 " }}}
-" Vim "{{{
+" Vim {{{
 let g:vimsyntax_noerror = 1
 "let g:vim_indent_cont = 0
 
 " }}}
-" Bash "{{{
+" Bash {{{
 let g:is_bash = 1
 
 " }}}
-" Java "{{{
+" Java {{{
 let g:java_highlight_functions = 'style'
 let g:java_highlight_all = 1
 let g:java_highlight_debug = 1
@@ -79,25 +88,35 @@ let g:java_space_errors = 1
 let g:java_highlight_functions = 1
 
 " }}}
-" JavaScript "{{{
+" JavaScript {{{
 let g:SimpleJsIndenter_BriefMode = 1
 let g:SimpleJsIndenter_CaseIndentLevel = -1
 
 " }}}
-" Markdown "{{{
+" Markdown {{{
 let g:markdown_fenced_languages = [
-	\  'coffee',
 	\  'css',
-	\  'erb=eruby',
 	\  'javascript',
 	\  'js=javascript',
 	\  'json=javascript',
-	\  'ruby',
+	\  'python',
+	\  'py=python',
+	\  'sh',
 	\  'sass',
 	\  'xml',
 	\  'vim'
 	\]
 
+" }}}
+" Folding {{{
+" augroup: a
+" function: f
+let g:vimsyn_folding = 'af'
+let g:tex_fold_enabled = 1
+let g:xml_syntax_folding = 1
+let g:php_folding = 2
+let g:php_phpdoc_folding = 1
+let g:perl_fold = 1
 " }}}
 " }}}
 " vim: set ts=2 sw=2 tw=80 noet :

@@ -1,12 +1,8 @@
 
 " Xterm & Tmux
 "---------------------------------------------------------
-if has('nvim')
-	finish
-endif
 
-if exists('$TMUX') "{{{
-	set ttyfast
+if exists('$TMUX') && ! has('nvim') "{{{
 	set ttymouse=sgr
 
 	" Assigns some xterm(1)-style keys to escape sequences passed by tmux
@@ -41,6 +37,10 @@ if exists('$TMUX') "{{{
 	execute "set <F11>=\e[23;*~"
 	execute "set <F12>=\e[24;*~"
 
+	" Hijack Vim unused keymaps for URxvt special key-codes
+	execute "set <F13>=<S-Return>"
+	execute "set <F14>=<C-Return>"
+
 	execute "set t_kP=^[[5;*~"
 	execute "set t_kN=^[[6;*~"
 
@@ -58,8 +58,8 @@ if exists('$TMUX') "{{{
 	let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>[0 q\<Esc>\\"
 
 "}}}
-else "{{{
-	set ttymouse=urxvt
+elseif ! has('nvim') "{{{
+	set ttymouse=urxvt     " Set mouse terminal type
 
 	" Cursor shape outside of tmux
 	let &t_SI = "\<Esc>[3 q"

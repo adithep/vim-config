@@ -14,6 +14,7 @@ set path=.,**                " Directories to search when using gf
 set virtualedit=block        " Position cursor anywhere in visual block
 set history=500              " Search and commands remembered
 set synmaxcol=1000           " Don't syntax highlight long lines
+set ttyfast                  " Indicate a fast terminal connection
 set formatoptions+=1         " Don't break lines after a one-letter word
 set formatoptions-=t         " Don't auto-wrap text
 
@@ -27,23 +28,18 @@ if has('patch-7.3.541')
 endif
 
 " What to save for views:
-set viewoptions-=options viewoptions+=slash,unix
+set viewoptions-=options viewoptions+=cursor,folds,slash,unix
 
-" What to save in sessions:
-set sessionoptions-=blank
+" What not to save in sessions:
 set sessionoptions-=options
 set sessionoptions-=globals
 set sessionoptions-=folds
 set sessionoptions-=help
 set sessionoptions-=buffers
-set sessionoptions+=tabpages
 
-if ( ! has('nvim') || $DISPLAY !=? '') && has('clipboard')
-	if has('unnamedplus')
-		set clipboard& clipboard+=unnamedplus
-	else
-		set clipboard& clipboard+=unnamed
-	endif
+if has('clipboard') || has('gui_running')
+	" Do not do anything with system's clipboard
+	set clipboard=
 endif
 
 " }}}
@@ -72,8 +68,6 @@ set undodir=$VARPATH/undo//,$VARPATH,~/tmp,/var/tmp,/tmp
 set backupdir=$VARPATH/backup/,$VARPATH,~/tmp,/var/tmp,/tmp
 set viewdir=$VARPATH/view/
 set nospell spellfile=$VIMPATH/spell/en.utf-8.add
-
-let g:session_directory = $VARPATH.'/session/'
 
 " Don't backup files in temp directories or shm
 if exists('&backupskip')
@@ -111,13 +105,13 @@ augroup END
 " ----------------
 set textwidth=80    " Text width maximum chars before wrapping
 set noexpandtab     " Don't expand tabs to spaces.
-set tabstop=2       " The number of spaces a tab is
-set softtabstop=2   " While performing editing operations
+set tabstop=4       " The number of spaces a tab is
+set softtabstop=4   " While performing editing operations
 set smarttab        " Tab insert blanks according to 'shiftwidth'
 set autoindent      " Use same indenting on new lines
 set smartindent     " Smart autoindenting on new lines
 set shiftround      " Round indent to multiple of 'shiftwidth'
-set shiftwidth=2    " Number of spaces to use in auto(indent)
+set shiftwidth=4    " Number of spaces to use in auto(indent)
 
 " }}}
 " Folds {{{
@@ -135,7 +129,7 @@ endif
 set timeout ttimeout
 set timeoutlen=750  " Time out on mappings
 set ttimeoutlen=250 " Time out on key codes
-set updatetime=1500 " Idle time to write swap and trigger CursorHold
+set updatetime=1000 " Idle time to write swap
 
 if has('nvim')
 	" https://github.com/neovim/neovim/issues/2017
@@ -159,7 +153,6 @@ set cpoptions-=m    " showmatch will wait 0.5s or until a char is typed
 " }}}
 " Behavior {{{
 " --------
-set nowrap                      " No wrap by default
 set linebreak                   " Break long lines at 'breakat'
 set breakat=\ \	;:,!?           " Long lines break chars
 set nostartofline               " Cursor in same column for few commands
@@ -169,12 +162,9 @@ set switchbuf=usetab,split      " Switch buffer behavior
 set backspace=indent,eol,start  " Intuitive backspacing in insert mode
 set diffopt=filler,iwhite       " Diff mode: show fillers, ignore white
 set showfulltag                 " Show tag and tidy search in completion
-set complete=.                  " No wins, buffs, tags, include scanning
 set completeopt=menuone         " Show menu even for one item
-set completeopt+=noselect       " Do not select a match in the menu
-if has('patch-7.4.775')
-	set completeopt+=noinsert
-endif
+set complete=.                  " No wins, buffs, tags, include scanning
+set nowrap                      " No wrap by default
 
 " }}}
 " Editor UI Appearance {{{
@@ -209,11 +199,6 @@ set colorcolumn=80      " Highlight the 80th character limit
 " Patch: https://groups.google.com/forum/#!topic/vim_dev/WeBBjkXE8H8
 if has('patch-7.4.314')
 	set shortmess+=c
-endif
-
-" Do not display message when editing files
-if has('patch-7.4.1570')
-	set shortmess+=F
 endif
 
 " For snippet_complete marker
