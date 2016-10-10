@@ -58,6 +58,7 @@ call dein#add('exu/pgsql.vim', {'on_ft': 'pgsql'})
 call dein#add('othree/nginx-contrib-vim', {'on_ft': 'nginx'})
 call dein#add('tbastos/vim-lua', {'on_ft': 'lua'})
 call dein#add('saltstack/salt-vim', {'on_ft': 'sls'})
+call dein#add('robbles/logstash.vim', {'on_path': '.*'})
 
 " }}}
 " Commands {{{
